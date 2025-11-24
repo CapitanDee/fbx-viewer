@@ -3,59 +3,106 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Racetrack 3D Ansicht</title>
+  <title>Racetrack AR Viewer</title>
 
-  <!-- Google Model Viewer -->
+  <!-- model-viewer: stabiler 3D/AR Viewer -->
   <script type="module" src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js"></script>
 
   <style>
     body {
       margin: 0;
-      background: #111;
-      color: white;
-      font-family: Arial, sans-serif;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      padding: 20px;
+      background: #0e0f12;
+      color: #fff;
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+      display: grid;
+      place-items: center;
+      min-height: 100vh;
+      padding: 16px;
+      box-sizing: border-box;
     }
+
+    .wrap {
+      width: min(100%, 1000px);
+    }
+
     h1 {
-      margin-bottom: 10px;
+      font-size: 1.25rem;
+      margin: 0 0 8px 0;
+      opacity: 0.95;
     }
+
     model-viewer {
       width: 100%;
-      height: 70vh;
-      background: #222;
-      border-radius: 10px;
+      height: 72vh;
+      background: #16181d;
+      border-radius: 14px;
+      overflow: hidden;
+      box-shadow: 0 10px 30px rgba(0,0,0,.35);
     }
-    #info {
+
+    /* eigener AR Button */
+    .ar-btn {
+      position: absolute;
+      left: 50%;
+      bottom: 16px;
+      transform: translateX(-50%);
+      padding: 12px 18px;
+      border: 0;
+      border-radius: 999px;
+      background: #4b8bff;
+      color: white;
+      font-weight: 700;
+      font-size: 15px;
+      box-shadow: 0 6px 18px rgba(0,0,0,.35);
+      cursor: pointer;
+    }
+
+    .hint {
       margin-top: 10px;
       font-size: 0.9rem;
-      opacity: 0.8;
-      text-align: center;
+      opacity: 0.75;
+      line-height: 1.35;
+    }
+
+    .tiny {
+      font-size: 0.8rem;
+      opacity: 0.6;
+      margin-top: 6px;
     }
   </style>
 </head>
-
 <body>
-  <h1>Racetrack 3D Modell</h1>
+  <div class="wrap">
+    <h1>Racetrack – 3D & AR</h1>
 
-  <!-- 3D Modell -->
-  <model-viewer id="viewer"
-    src="racetrack.glb"
-    ar
-    ar-modes="scene-viewer webxr"
-    alt="3D Racetrack Modell"
-    camera-controls
-    auto-rotate
-    rotation-per-second="20deg"
-    shadow-intensity="1"
-    exposure="1.2">
-  </model-viewer>
+    <model-viewer
+      id="viewer"
+      src="racetrack.glb"
+      alt="Racetrack 3D Modell"
+      camera-controls
+      auto-rotate
+      rotation-per-second="18deg"
+      shadow-intensity="1"
+      exposure="1.1"
 
-  <div id="info">
-    Ziehe mit der Maus oder per Touch, um das Modell zu drehen.<br>
-    Nutze das Mausrad / Pinch-Geste zum Zoomen.
+      ar
+      ar-modes="scene-viewer webxr"
+      ar-scale="fixed"
+      ar-placement="floor"
+    >
+      <!-- Der Slot-Button erscheint nur, wenn AR unterstützt wird -->
+      <button slot="ar-button" class="ar-btn">In AR ansehen</button>
+    </model-viewer>
+
+    <div class="hint">
+      Drehen/Zoomen im 3D-Viewer per Touch oder Maus.<br>
+      Tippe auf <strong>„In AR ansehen“</strong>, um ARCore/Scene Viewer zu starten.
+    </div>
+
+    <div class="tiny">
+      Hinweis: AR startet aus Sicherheitsgründen erst nach einem Tap.
+    </div>
   </div>
 </body>
 </html>
+
